@@ -5,6 +5,7 @@
 import csv
 import yaml
 from time import time
+from math import sqrt
 
 #Code Snippets
 
@@ -20,7 +21,6 @@ def Reverse(lst):
 
 
 #Main Code Starts from here
-
 
 #Some matches may not have equal innings
 innings1=0
@@ -47,7 +47,7 @@ def magic_function(i):
         batsman=req_dict['wicket']['player_out']
         if(bowler in bowler_dict.keys()):
             temp=bowler_dict[bowler]
-            temp[0]=temp[0]+1;temp[1]=temp[1]+1;
+            temp[0]=temp[0]+1;temp[1]=temp[1]+1
             bowler_dict[bowler]=temp
         else:
             temp=[1,1,0]
@@ -108,10 +108,36 @@ for num in range(335983,1082651):
     for i in second_innings_deliveries:
         magic_function(i)
 
+#What heuristics to use
+#For bowler goodness is directly proportional to the number of wickets he takes
+#and inversely proportional to the square root of runs he gives
+
+#For batsman goodness is directly proprotional to the number of runs he scores
+#and 
+
+counter=0
+
 for i in bowler_dict.keys():
-    print(i,bowler_dict[i])
+    l=bowler_dict[i]
+    if(l[2]==0):
+        l[2]=1
+    value=l[0]/sqrt(l[2])
+    #print(counter,value,i)
+    print(counter,"1:"+value)
+    counter=counter+1
+    #This if for the clustering
 
+print("\n\n\n\n\n")
+
+counter=0
 for i in batsman_dict.keys():
-    print(i,batsman_dict[i])
-
+    l=batsman_dict[i]
+    if(l[2]==0):
+        l[2]=1
+    value=l[0]/l[2]
+    #print(counter,value,i)
+    print(counter,"1:"+value)
+    counter=counter+1
+    #This if for the clustering
+    
 #Program ends
