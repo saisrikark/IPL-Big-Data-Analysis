@@ -21,11 +21,9 @@ def Reverse(lst):
 #Snippet to check whether entry is in the dictionary or not
 def check_or_add(type,tup):
     if(type==0):
-        bowler_batsman[tup]=[0,0]
+        bowler_batsman[tup]=[0,0,0]
     else:
-        batsman_bowler[tup]=[0,0]
-
-
+        batsman_bowler[tup]=[0,0,0,0,0,0,0,0,0,0]
 
 
 #Main Code Starts from here
@@ -40,12 +38,12 @@ extension=".yaml"
 
 #For bowler I want to find for each batsman how many runs he's given and how many wickets he's taken
 #For that purpose this dictionary
-#Pattern : Bowler, Batsman, Runs, Wickets
+#Pattern : Bowler, Batsman, Wickets, Runs_given
 bowler_batsman=dict()
 
 #For batsman I want to find how many wickets lost to each bowler and how many runs against that bowler
 #For that purpose this dictionary
-#Pattern : Batsman, Bowler, Wickets, Runs
+#Pattern : Batsman, Bowler, Runs_scored_totally, Times_out, Singles, Doubles, Triples, 4's, 6's, Total_balls_faced_against_that_bowler
 batsman_bowler=dict()
 
 for num in range(335983,1082651):
@@ -54,20 +52,12 @@ for num in range(335983,1082651):
         d=yaml_loader(filepath+str(num)+extension)
     except FileNotFoundError:
         continue
-    #print(num)
 
     total_innings=d["innings"]
     first=total_innings[0]
     first_innings_deliveries=first['1st innings']['deliveries']
     second_innings_deliveries=dict()
     innings1+=1
-
-            #For each ball I must compute and store it in both files
-            #Very slow
-            #For all bowler bowling to a batsman pair one dict
-            #For all batsman batting to a bowler one dict
-            #Both are updated every time
-            #In the end both are written to different files
 
     for i in first_innings_deliveries:
             k=list(i.keys())
@@ -80,9 +70,12 @@ for num in range(335983,1082651):
                     check_or_add(0,(bowler,batsman))
                 if((batsman,bowler) not in batsman_bowler.keys()):
                     check_or_add(1,(batsman,bowler))
-                bowler_batsman[(bowler,batsman)][1]=bowler_batsman[(bowler,batsman)][1]+1
-                batsman_bowler[(batsman,bowler)][0]=batsman_bowler[(batsman,bowler)][0]+1
-
+                row1=bowler_batsman[(bowler,batsman)]
+                row2=batsman_bowler[(batsman,bowler)]
+                row1[0]+=1;row1[2]+=1
+                row2[1]+=1;row2[2]+=1
+                bowler_batsman[(bowler,batsman)]=row1
+                batsman_bowler[(batsman,bowler)]=row2
             else:
                 bowler=req_dict['bowler']
                 batsman=req_dict['batsman']
@@ -90,11 +83,13 @@ for num in range(335983,1082651):
                     check_or_add(0,(bowler,batsman))
                 if((batsman,bowler) not in batsman_bowler.keys()):
                     check_or_add(1,(batsman,bowler))
-                runs=req_dict['runs']['total']
-                bowler_batsman[(bowler,batsman)][0]=bowler_batsman[(bowler,batsman)][0]+runs
-                batsman_bowler[(batsman,bowler)][1]=batsman_bowler[(batsman,bowler)][1]+runs
- #               print(runs)
-
+                runs=int(req_dict['runs']['total'])
+                row1=bowler_batsman[(bowler,batsman)]
+                row2=batsman_bowler[(batsman,bowler)]
+                row1[1]+=runs;row1[2]+=1
+                if(runs>6):
+                    runs=6
+                row2[0]+=runs;row2[runs+3]+=1
     
     if(len(total_innings)==2):
         second=total_innings[1]
@@ -104,7 +99,6 @@ for num in range(335983,1082651):
         continue
     
     for i in second_innings_deliveries:
-    
             k=list(i.keys())
             req_dict=i[k[0]]
 
@@ -115,9 +109,12 @@ for num in range(335983,1082651):
                     check_or_add(0,(bowler,batsman))
                 if((batsman,bowler) not in batsman_bowler.keys()):
                     check_or_add(1,(batsman,bowler))
-                bowler_batsman[(bowler,batsman)][1]=bowler_batsman[(bowler,batsman)][1]+1
-                batsman_bowler[(batsman,bowler)][0]=batsman_bowler[(batsman,bowler)][0]+1
-
+                row1=bowler_batsman[(bowler,batsman)]
+                row2=batsman_bowler[(batsman,bowler)]
+                row1[0]+=1;row1[2]+=1
+                row2[1]+=1;row2[2]+=1
+                bowler_batsman[(bowler,batsman)]=row1
+                batsman_bowler[(batsman,bowler)]=row2
             else:
                 bowler=req_dict['bowler']
                 batsman=req_dict['batsman']
@@ -125,17 +122,30 @@ for num in range(335983,1082651):
                     check_or_add(0,(bowler,batsman))
                 if((batsman,bowler) not in batsman_bowler.keys()):
                     check_or_add(1,(batsman,bowler))
-                runs=req_dict['runs']['total']
-                bowler_batsman[(bowler,batsman)][0]=bowler_batsman[(bowler,batsman)][0]+runs
-                batsman_bowler[(batsman,bowler)][1]=batsman_bowler[(batsman,bowler)][1]+runs
-#                print(runs)
+                runs=int(req_dict['runs']['total'])
+                row1=bowler_batsman[(bowler,batsman)]
+                row2=batsman_bowler[(batsman,bowler)]
+                row1[1]+=runs;row1[2]+=1
+                if(runs>6):
+                    runs=6
+                row2[0]+=runs;row2[runs+3]+=1
+
+row=list()
+
+print("Computation done, Printing/Writing")
 
 for i in bowler_batsman.keys():
-    print(i,"  ",bowler_batsman[i][0],bowler_batsman[i][1])
+    try:
+        print(list(i)+bowler_batsman[i])
+    except:
+        continue
 
 print("\n\n")
 
 for i in batsman_bowler.keys():
-    print(i,"  ",batsman[i][0],batsman[i][1])
+    try:
+        print(list(i)+batsman_bowler[i])
+    except:
+        continue
 
 #Program ends
