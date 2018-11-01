@@ -26,7 +26,7 @@ def Reverse(lst):
 innings1=0
 innings2=0
 
-filepath="/home/srikar/Desktop/Big_Data_Project/Phase_1/data/"
+filepath="/home/srikar/Desktop/Big_Data_Project/Phase_1_Final/data/"
 extension=".yaml"
 
 #For batsman dict will be 
@@ -122,8 +122,9 @@ for i in bowler_dict.keys():
     if(l[2]==0):
         l[2]=1
     value=l[0]/sqrt(l[2])
-    #print(counter,value,i)
-    print(counter,"1:"+value)
+    print(counter,value,i)
+    #print(counter,"1:"+str(value))
+    #print(counter,i)
     counter=counter+1
     #This if for the clustering
 
@@ -135,8 +136,9 @@ for i in batsman_dict.keys():
     if(l[2]==0):
         l[2]=1
     value=l[0]/l[2]
-    #print(counter,value,i)
-    print(counter,"1:"+value)
+    print(counter,value,i)
+    #print(counter,"1:"+str(value))
+    #print(counter,i)
     counter=counter+1
     #This if for the clustering
     
