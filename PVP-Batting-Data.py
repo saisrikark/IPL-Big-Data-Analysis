@@ -89,7 +89,7 @@ for num in range(335983,1082651):
                 row1[1]+=runs;row1[2]+=1
                 if(runs>6):
                     runs=6
-                row2[0]+=runs;row2[runs+3]+=1
+                row2[0]+=runs;row2[runs+2]+=1
     
     if(len(total_innings)==2):
         second=total_innings[1]
@@ -111,7 +111,7 @@ for num in range(335983,1082651):
                     check_or_add(1,(batsman,bowler))
                 row1=bowler_batsman[(bowler,batsman)]
                 row2=batsman_bowler[(batsman,bowler)]
-                row1[0]+=1;row1[2]+=1
+                row1[0]+=1;row1[2]+=1;#row1[]
                 row2[1]+=1;row2[2]+=1
                 bowler_batsman[(bowler,batsman)]=row1
                 batsman_bowler[(batsman,bowler)]=row2
@@ -128,11 +128,12 @@ for num in range(335983,1082651):
                 row1[1]+=runs;row1[2]+=1
                 if(runs>6):
                     runs=6
-                row2[0]+=runs;row2[runs+3]+=1
+                row2[0]+=runs;row2[runs+2]+=1
 
 row=list()
 
 print("Computation done, Printing/Writing")
+
 
 for i in bowler_batsman.keys():
     try:
@@ -148,4 +149,18 @@ for i in batsman_bowler.keys():
     except:
         continue
 
+'''
+#This is for probabilities
+batsman_bowler_prob={}
+bowler_batsman_prob={}
+
+for i in batsman_bowler.keys():
+    singles;doubles;
+    batsman_bowler_prob[i]=[int(batsman_bowler[i][4]/9, int(batsman_bowler[i][4]/9)
+
+
+#Bowler_Batsman to make him out probability
+for i in bowler_batsman.keys():
+    prob= 
+'''
 #Program ends
